@@ -1,18 +1,19 @@
+import { useRouter } from "next/router.js";
 import { volumes } from "../../resources/lib/data.js";
 import Link from "next/link";
 
 export default function VolumeOne() {
-  const findVolume = volumes.find(
-    ({ slug }) => slug === "the-fellowship-of-the-ring"
-  );
+  const router = useRouter();
+  const { slug } = router.query;
+
+  const findVolume = volumes.find((volume) => volume.slug === slug);
+
+  const { title, description } = findVolume;
 
   return (
     <>
-      <p>
-        <Link href="/volumes"> ⬅ All Volumes </Link>
-      </p>
-      <h1>{findVolume.title}</h1>
-      <p>{findVolume.description}</p>
+      <h1>{title}</h1>
+      <p>{description}</p>
       <ul>
         <li>
           {findVolume.books[0].ordinal} - {findVolume.books[0].title}
@@ -21,6 +22,9 @@ export default function VolumeOne() {
           {findVolume.books[1].ordinal} - {findVolume.books[1].title}
         </li>
       </ul>
+      <p>
+        <Link href="/volumes"> ⬅ Back to all Volumes </Link>
+      </p>
     </>
   );
 }
